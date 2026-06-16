@@ -281,7 +281,6 @@ main {
     font-family: Georgia, serif;
     cursor: pointer;
     width: 100%;
-    transition: background 0.2s;
 }
  
 #guardar:hover {

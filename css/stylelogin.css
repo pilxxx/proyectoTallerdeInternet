@@ -246,7 +246,7 @@ body.dark #form-login label {
     color: #ccc;
 }
  
-body.dark #username body.dark #password {
+body.dark #username, body.dark #password {
     background: #2a2a2a;
     color: #f0f0f0;
     border-color: #555;
@@ -321,53 +321,34 @@ body.dark .header-derecha #link-home:hover {
 }
 
 /* en pantallas grandes: hamburguesa oculto, nav siempre visible */
-@media (min-width: 769px) {
-    .btn-hamburguesa {
-        display: none;
-    }
-}
-
-@media (max-width: 768px) {
-    .header-top {
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-
-    .header-derecha {
-        flex-wrap: wrap; 
-        justify-content: flex-end;
-        gap: 6px;
-    }
-
-    .header-logo {
-        order: -1;
-        flex: 0 0 100%;
-        text-align: center;
-    }
-
-    #btn-darkmode,
-    #boton-logout,
-    #link-home {
-        font-size: 0.78rem;
-        padding: 0.3rem 0.8rem;
-    }
-}
-
- @media (max-width: 768px) {
-    .ubicacion-noticias {
-        grid-template-columns: 1fr;   /* una sola columna en móvil */
-    }
-}
-
-@media (min-width: 480px) and (max-width: 768px) {
-    .ubicacion-noticias {
-        grid-template-columns: repeat(2, 1fr);  /* dos columnas en tablet chico */
-    }
-}
-
 @media (max-width: 768px) {
     main {
-        padding: 0 0.75rem;
-        margin: 1rem auto;
+        padding: 1.5rem 1rem; /* mantiene padding interno de la carta */
+        margin: 0.5rem auto;  /* reduce el espacio superior */
+        border-radius: 10px;
+        width: calc(100% - 2rem); /* ocupa casi todo el ancho */
     }
-} 
+
+    main h2 {
+        font-size: 1.3rem;
+    }
+
+    main > p {
+        font-size: 0.85rem;
+    }
+
+    #username,
+    #password {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    #enviar {
+        padding: 0.6rem;
+        font-size: 0.9rem;
+    }
+
+    #mostrarcontraseña {
+        font-size: 0.75rem;
+    }
+}
