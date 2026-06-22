@@ -7,7 +7,7 @@ function mostrarnews() {
     const contenedor = document.querySelector(".ubicacion-noticias")
     if (!contenedor) return // por si se llama desde una pag q no tiene noticias
 
-    const noticias = JSON.parse(localStorage.getItem("noticias")) || []
+    let noticias = JSON.parse(localStorage.getItem("noticias")) || []
     // el || [] es para q si no hay nada guardado no explote todo
 
     if (noticias.length === 0) {
@@ -15,38 +15,58 @@ function mostrarnews() {
         return
     }
 
+    //manejo de FAaVS:
+    let estaEnAdmin = document.getElementById("createnoticia")
     contenedor.innerHTML = noticias.map(function(noticia) {
+        let botonFav = ""
+        if (!estaEnAdmin) {
+            botonFav = `<button class="guardarfav" id="${noticia.id}">♡</button>`
+        }
         return `
         <article class="noticia">
-            <h3>${noticia.titulo}</h3>
-            <img src="${noticia.imagen}" alt="${noticia.titulo}">
-            <p>${noticia.descripcion}</p>
+        <h3>${noticia.titulo}</h3>
+        <img src="${noticia.imagen}" alt="${noticia.titulo}">
+        <p>${noticia.descripcion}</p>
+        ${botonFav}
         </article>`
-    }).join("") // el join es pq map devuelve un array y necesito un string para el innerHTML
+    }).join("")
+    if (typeof activarBotonesFavs === "function") {
+        activarBotonesFavs()
+    }
 }
 
-// buscador - filtra por titulo mientras escribis
+// buscador (filtra x title mientras escribo)
 const buscador = document.getElementById("buscadorxtitulo")
 if (buscador) {
-    buscador.addEventListener("input", function() { // "input" se dispara cada vez q escribis una letra
+    buscador.addEventListener("input", function() { // el input se dispara cada vez q escribo una letra
         const termino = buscador.value.toLowerCase()
-        const noticias = JSON.parse(localStorage.getItem("noticias")) || []
+        let noticias = JSON.parse(localStorage.getItem("noticias")) || []
 
         const filtradas = noticias.filter(function(n) {
             return n.titulo.toLowerCase().includes(termino)
         })
 
-        const contenedor = document.querySelector(".ubicacion-noticias")
+        let contenedor = document.querySelector(".ubicacion-noticias")
         if (!contenedor) return
 
-        contenedor.innerHTML = filtradas.map(function(n) {
-            return `
+        // esto lo hice para q el boton de fav no aparezca en admin pq los favs son para el visitante, NO para el que carga noticias!!
+        const estaEnAdmin = document.getElementById("createnoticia")
+        contenedor.innerHTML = filtradas.map(function(noticia) {
+            let botonFav = ""
+            if (!estaEnAdmin) {
+                botonFav = `<button class="guardarfav" id="${noticia.id}">♡</button>`
+            }
+        return `
             <article class="noticia">
-                <h3>${n.titulo}</h3>
-                <img src="${n.imagen}" alt="${n.titulo}">
-                <p>${n.descripcion}</p>
+            <h3>${noticia.titulo}</h3>
+                <img src="${noticia.imagen}" alt="${noticia.titulo}">
+            <p>${noticia.descripcion}</p>
+            ${botonFav}
             </article>`
-        }).join("")
+    }).join("")
+        if (typeof activarBotonesFavs === "function") {
+            activarBotonesFavs()
+        }
     })
 }
 
