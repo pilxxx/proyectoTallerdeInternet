@@ -2,7 +2,6 @@
 // esto va conectado con el form de login.html
 // la api es de dummyjson, devuelve un token si el user y pass son correctos
 
-//OCRRIJO TEMA ERROR 'MENTIROSO' EN EL CATCH
 async function logindeladmin(username, password) {
     try {
         const rta = await fetch("https://dummyjson.com/auth/login", {
@@ -11,36 +10,22 @@ async function logindeladmin(username, password) {
             body: JSON.stringify({ username, password }) // convierto el obj a string pq así lo pide la api
         })
 
-        // antes el catch decia "error de conexion" para TODO, y eso esta mal
-        // pq capaz el error es que el user o pass estan mal, o el code 
-        if (rta.status === 400) {
-            alert("usuario o contraseña incorrectos")
-            return
-        }
-        if (rta.status === 404) {
-            alert("no se encontró el servidor de login, intente más tarde")
-            return
-        }
-        if (!rta.ok) {
-            //para cubrir cualq error q no vi antes
-            alert("hubo un error con el servidor (codigo " + rta.status + ")")
-            return
-        }
-
         const datos = await rta.json()
+
         if (datos.accessToken) {
             // si existe el token es pq las credenciales fueron correctas
             sessionStorage.setItem("token", datos.accessToken) // guardo el token en sessionStorage para usarlo en otras paginas
             sessionStorage.setItem("usuario", datos.username)
             sessionStorage.setItem("nombre", datos.firstName) //nombre real user
             window.location.href = "admin.html" // mando al admin a su panel
+            
         } else {
-            //just in caAse
             alert("usuario o contraseña incorrectos")
         }
+
     } catch (error) {
-        //ahora si el verdadero error d red (fetch ha fallao)
-        alert("no se pudo conectar al servidor, fijate si tenés internet")
+        // esto pasa si directamente no llega a conectarse con la api
+        alert("error de conexión, fijate si tenés internet")
     }
 }
 
@@ -51,7 +36,7 @@ function log_out() {
     window.location.href = "index.html" // lo mando al home
 }
 
-// conecto el form (si existe)
+// conecto el form (si existe en la pagina)
 const login_del_form = document.getElementById("form-login")
 if (login_del_form) {
     login_del_form.addEventListener("submit", function(eRR) { // eRR = evento, lo llame asi pq me confundo con 'e' a veces
@@ -81,6 +66,7 @@ if (btnVerPass) {
         }
     })
 }
+// index.html: mostrar el botón correcto según si hay sesión activa
 const linkIniciar    = document.getElementById("link-iniciar")
 const dropdownPerfil = document.getElementById("dropdown-perfil")
 const dropdownMenu   = document.getElementById("dropdown-menu")

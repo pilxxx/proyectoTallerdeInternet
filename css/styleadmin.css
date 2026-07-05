@@ -321,25 +321,6 @@ main {
     transition: all 0.2s;
 }
 
-.guardarfav {
-    padding: 0.8rem 1rem;
-    font-size: 1rem;
-    background: #ffffff;
-    background: linear-gradient(90deg,rgba(255, 255, 255, 1) 0%, rgba(225, 232, 250, 1) 35%, rgba(225, 232, 250, 1) 100%);
-    border: none;
-    border-top: 1px solid rgba(0,0,0,0.08);
-    width: 100%;
-    text-align: center;
-    cursor: pointer;
-    font-family: Georgia, serif;
-    transition: all 0.2s;
-}
-body.dark .guardarfav {
-    background: linear-gradient(90deg, #1a1a1a 0%, #1e1e3a 100%);
-    color: #f0f0f0;
-    border-top-color: rgba(255,255,255,0.08);
-}
-
 .lapiz:hover {
     background-color: #000;
     color: white;
