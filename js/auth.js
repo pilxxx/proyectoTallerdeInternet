@@ -1,7 +1,7 @@
 // auth - login y logout del admin
 // esto va conectado con el form de login.html
 // la api es de dummyjson, devuelve un token si el user y pass son correctos
-
+//OCRRIJO TEMA ERROR 'MENTIROSO' EN EL CATCH
 async function logindeladmin(username, password) {
     try {
         const rta = await fetch("https://dummyjson.com/auth/login", {
@@ -9,34 +9,44 @@ async function logindeladmin(username, password) {
             headers: { "Content-Type": "application/json" }, // le digo al server q le mando json
             body: JSON.stringify({ username, password }) // convierto el obj a string pq así lo pide la api
         })
-
+        // antes el catch decia "error de conexion" para TODO, y eso esta mal
+        // pq capaz el error es que el user o pass estan mal, o el code 
+        if (rta.status === 400) {
+            alert("usuario o contrasena incorrectos")
+            return
+        }
+        if (rta.status === 404) {
+            alert("no se encontro el servidor de login, intente mas tarde")
+            return
+        }
+        if (!rta.ok) {
+            //para cubrir cualq error q no vi antes
+            alert("hubo un error con el servidor (codigo " + rta.status + ")")
+            return
+        }
         const datos = await rta.json()
-
         if (datos.accessToken) {
             // si existe el token es pq las credenciales fueron correctas
             sessionStorage.setItem("token", datos.accessToken) // guardo el token en sessionStorage para usarlo en otras paginas
             sessionStorage.setItem("usuario", datos.username)
             sessionStorage.setItem("nombre", datos.firstName) //nombre real user
             window.location.href = "admin.html" // mando al admin a su panel
-            
         } else {
-            alert("usuario o contraseña incorrectos")
+            //just in caAse
+            alert("usuario o contrasena incorrectos")
         }
-
     } catch (error) {
-        // esto pasa si directamente no llega a conectarse con la api
-        alert("error de conexión, fijate si tenés internet")
+        //ahora si el verdadero error d red (fetch ha fallao)
+        alert("no se pudo conectar al servidor, fijate si tenes internet")
     }
 }
-
 function log_out() {
     sessionStorage.removeItem("token")
     sessionStorage.removeItem("usuario")
     sessionStorage.removeItem("nombre")
     window.location.href = "index.html" // lo mando al home
 }
-
-// conecto el form (si existe en la pagina)
+// conecto el form (si existe)
 const login_del_form = document.getElementById("form-login")
 if (login_del_form) {
     login_del_form.addEventListener("submit", function(eRR) { // eRR = evento, lo llame asi pq me confundo con 'e' a veces
@@ -46,42 +56,38 @@ if (login_del_form) {
         logindeladmin(username, password)
     })
 }
-
 // boton de cerrar sesion en admin.html
 const boton_log_out = document.getElementById("boton-logout")
 if (boton_log_out) {
     boton_log_out.addEventListener("click", log_out)
 }
-// mostrar/ocultar contraseña en login
+// mostrar/ocultar contrasena en login
 const btnVerPass = document.getElementById("mostrarcontraseña")
 if (btnVerPass) {
     btnVerPass.addEventListener("click", function() {
         const inputPass = document.getElementById("password")
         if (inputPass.type === "password") {
             inputPass.type = "text"
-            btnVerPass.textContent = "Ocultar contraseña"
+            btnVerPass.textContent = "Ocultar contrasena"
         } else {
             inputPass.type = "password"
-            btnVerPass.textContent = "Mostrar Contraseña"
+            btnVerPass.textContent = "Mostrar Contrasena"
         }
     })
 }
-// index.html: mostrar el botón correcto según si hay sesión activa
 const linkIniciar    = document.getElementById("link-iniciar")
 const dropdownPerfil = document.getElementById("dropdown-perfil")
 const dropdownMenu   = document.getElementById("dropdown-menu")
 const btnPerfil      = document.getElementById("btn-perfil")
-
 //solo corre en index.html (link-iniciar)
 if (linkIniciar) {
     if (sessionStorage.getItem("token")) {
         linkIniciar.style.display = "none"
         dropdownPerfil.style.display = "block"
         const nombre = sessionStorage.getItem("nombre") || sessionStorage.getItem("usuario")
-        document.getElementById("saludoUsuario").textContent = "¡Hola, " + nombre + "!"
+        document.getElementById("saludoUsuario").textContent = "Hola, " + nombre + "!"
     }
 }
-
 if (btnPerfil && dropdownMenu) {
     btnPerfil.addEventListener("click", function(e) {
         e.stopPropagation() // no dejo q el click no clickee ahre

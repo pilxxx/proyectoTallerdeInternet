@@ -133,6 +133,8 @@ header {
     flex-direction: column;
     gap: 0.3rem;
     z-index: 100;
+    max-height: 400px;
+    overflow-y: auto;
 }
 
 /* cuando el JS agrega la clase, se muestra */
@@ -170,6 +172,7 @@ header {
 }
 
 /* boton de modo obscuro, diseño/como se ve*/
+#btn-favoritos,
 #btn-darkmode {
     padding: 0.4rem 1.2rem;
     background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(225,232,250,1) 100%);
@@ -183,7 +186,8 @@ header {
     
 }
 /*le agrego un hover para que se vea mas interactivo, al pasar el mouse por encima cambia el fondo y el texto*/
-#btn-darkmode:hover {
+#btn-darkmode:hover
+#btn-favoritos:hover {
     background: #E1E8FA;
     background: radial-gradient(circle, rgba(225, 232, 250, 1) 12%, rgba(255, 255, 255, 1) 100%);
 }
@@ -399,8 +403,27 @@ main h2 {
     background: linear-gradient(90deg,rgba(255, 255, 255, 1) 0%, rgba(225, 232, 250, 1) 35%, rgba(225, 232, 250, 1) 100%);
     line-height: 1.5;
 }
+body.dark .guardarfav {
+    background: linear-gradient(90deg, #1a1a1a 0%, #1e1e3a 100%);
+    color: #f0f0f0;
+    border-top-color: rgba(255,255,255,0.08);
+}
+/*corte fav*/
+.guardarfav {
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    background: #ffffff;
+    background: linear-gradient(90deg,rgba(255, 255, 255, 1) 0%, rgba(225, 232, 250, 1) 35%, rgba(225, 232, 250, 1) 100%);
+    border: none;
+    border-top: 1px solid rgba(0,0,0,0.08);
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+    font-family: Georgia, serif;
+    transition: all 0.2s;
+}
 
-/* es el diseño visual del buscador, nada loco lo hice ya que es algo secundarios*/
+/* es el diseño visual del buscador, nada loco lo hice ya que es algo secundarios*/ /*euge crack*/
 
 #buscadorxtitulo {
     padding: 0.5rem 1rem;
@@ -546,13 +569,15 @@ body.dark #btn-perfil:hover {
     transition: all 0.3s ease 0s;
 }
 
-body.dark #btn-darkmode {
+body.dark #btn-darkmode,
+body.dark #btn-favoritos  {
     background: linear-gradient(90deg, #1a1a1a 0%, #1e1e3a 100%);
     color: #f0f0f0;
     border: none;
 }
 
-body.dark #btn-darkmode:hover {
+body.dark #btn-darkmode:hover,
+body.dark #btn-favoritos:hover {
     background: #1E1E3A;
     background: radial-gradient(circle, rgba(30, 30, 58, 1) 12%, rgba(26, 26, 26, 1) 100%);
     color: #ffffff;
